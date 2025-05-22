@@ -1,0 +1,130 @@
+\documentclass[a4paper,12pt]{article} % Document class and basic formatting
+\usepackage[utf8]{inputenc}           % UTF-8 input encoding
+\usepackage[T2A]{fontenc}             % Cyrillic font encoding
+\usepackage[russian]{babel}           % Russian language support
+\usepackage{hyperref}                 % For hyperlinks
+\usepackage{graphicx}                 % For images
+\usepackage{lmodern}                  % Improved font rendering
+\usepackage{fancyvrb}                 % Fancy verbatim (code-like) environments
+\usepackage{listings}                 % Code listings
+\usepackage{xcolor}                   % Color support (for code highlighting)
+\usepackage{caption}                 % Caption formatting
+\usepackage{geometry}                % Page margin setup
+\geometry{margin=2.5cm}              % Set 2.5cm margins
+
+
+\title{Документация Telegram-бота для ГАУ ТО \\ «Тобольский ветцентр»} % Project title
+\author{Разработано: Попова Виктория Викторовна} % Author name
+\date{\today }% Date of document generation
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Введение} % Introduction section — explaining what the bot is and who it's for
+
+Данный Telegram-бот создан для автоматизации взаимодействия с потенциальными сотрудниками и студентами, заинтересованными в прохождении практики или трудоустройстве в государственном автономном учреждении Тюменской области «Тобольский межрайонный центр ветеринарии».
+
+\section{Общая архитектура} % Architecture section — explains the components of the project
+\subsection{Основные компоненты}
+\begin{itemize}
+    \item \texttt{main.py} — основной скрипт, реализующий бизнес-логику Telegram-бота.  % main.py — the main bot logic, handles Telegram interaction and callbacks
+    \item \texttt{database.py} — модуль для взаимодействия с базой данных SQLite. % database.py — handles database operations (SQLite)
+    \item \texttt{check\_db.py} — вспомогательный скрипт для ручной проверки данных в базе. % check_db.py — optional helper script for manually inspecting stored data
+\end{itemize}
+
+\subsection{Иллюстрации в интерфейсе бота} % These figures demonstrate images that the bot sends to users during interaction
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{guarantees.jpg}
+\caption{Изображение, отправляемое ботом при выборе «Преимущества работы в нашем учреждении»} % Figure 1: Visual explanation of work advantages
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{thestory.jpg}
+\caption{Изображение, отправляемое ботом при выборе «Истории успеха ветеринарных специалистов»} % Figure 2: Success stories of veterinary specialists
+\end{figure}
+
+\newpage
+\subsection{База данных}% This code block shows the SQL structure of the 'applicants' table
+Структура таблицы \texttt{applicants}, в которую сохраняются данные анкетирования: % where data collected from users (via questionnaire) is stored
+
+\begin{lstlisting}[language=SQL, basicstyle=\ttfamily\small, backgroundcolor=\color{gray!10}]
+CREATE TABLE applicants (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    telegram_id INTEGER,
+    fio TEXT,
+    contact TEXT,
+    age TEXT,
+    edu TEXT,
+    year TEXT,
+    exp TEXT,
+    about TEXT
+);
+\end{lstlisting}
+
+\section{Функционал бота}
+\subsection{Команды}% Bot command list — describes what commands users (and admins) can issue
+\begin{itemize}
+    \item \texttt{/start} — приветствие и главное меню. % /start — starts the bot
+    \item \texttt{/getdb} — отправка текущей базы данных администратору. % /getdb — sends DB file to admin
+    \item \texttt{/showdb} — текстовый вывод всех записей из базы (ограничен по длине).% /showdb — shows data in chat (limited length)
+\end{itemize}
+
+\subsection{Интерактивное меню} % Description of the interactive menu options available after /start    
+Доступные действия:
+\begin{itemize}
+    \item Чем мы занимаемся и какова наша миссия. % Users can learn about the center and it's mission
+    \item Преимущества работы в нашем учреждении. % Users can see work benefits
+    \item Истории успеха ветеринарных специалистов.% Users can read success stories
+    \item Как присоединиться к нашей команде. % Users can fill questionnaire for employment
+\end{itemize}
+
+\section{Ключевые функции \texttt{main.py}} % Table of key functions in main.py
+% Each row explains the purpose of the function: user interaction, data handling, or admin commands
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|p{4,5cm}|p{10cm}|}
+\hline
+\texttt{start(message)} & Обработка команды \texttt{/start}, отображение главного меню. \\ \hline
+\texttt{callback\_handler(call)} & Обработка нажатий на кнопки и маршрутизация действий. \\ \hline
+\texttt{main\_handler(message)} & Диалог с пользователем в процессе заполнения анкеты. \\ \hline
+\texttt{handle\_contact(message)} & Сохранение контактной информации пользователя. \\ \hline
+\texttt{send\_db\_file(message)} & Отправка файла базы данных в ответ на \texttt{/getdb}. \\ \hline
+\end{tabular}
+\caption{Основные функции скрипта \texttt{main.py}}
+\end{table}
+
+\section{Установка и запуск} % Setup and installation instructions (for developers or HR staff) 
+\begin{enumerate}
+    \item Установите зависимости: % Step 1: Install required Python libraries
+    \begin{lstlisting}[language=bash]
+pip install pyTelegramBotAPI python-dotenv
+    \end{lstlisting}
+
+    \item Создайте файл \texttt{.env} со следующим содержимым: % Step 2: Create .env file with your personal Telegram Bot API key
+    \begin{lstlisting}[language=bash]
+API_KEY=your_token_here
+    \end{lstlisting}
+
+    \item Запустите бота: % Step 3: Run the bot with Python
+    \begin{lstlisting}[language=bash]
+python main.py
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Заключение} % The bot simplifies HR work and student onboarding
+Бот существенно упрощает процесс первичного контакта с потенциальными соискателями и студентами. Он позволяет автоматизировать сбор информации, предоставить ключевые сведения об учреждении и упростить документооборот.
+
+\textbf{Планы на развитие:} % Future improvements:
+\begin{itemize}
+    \item Интеграция с электронной почтой для уведомлений HR; % - Email notifications for staff
+    \item Интеграция с CRM-системами; % - CRM integration
+    \item Возможность прикрепления резюме соискателей вместо анкетирования. % - Resume upload support (instead of plain forms)
+\end{itemize}
+
+\end{document}
