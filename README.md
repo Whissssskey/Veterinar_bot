@@ -1,6 +1,6 @@
 # Veterinar_bot, Telegram Bot for Tobolsk Interdistrict Veterinary Center
 
-This project contains a Telegram bot developed for the **Tobolsk Interdistrict Veterinary Center (ГАУ ТО «Тобольский межрайонный центр ветеринарии»)**
+This project contains a Telegram bot developed for the **Tobolsk Interdistrict Veterinary Center (ГАУ ТО «Тобольский ветцентр»)**
 to help automate interactions with job applicants and students seeking internships.
 
 The bot simplifies the HR process, collects applicant information, and provides key details about the organization in a user-friendly format.
