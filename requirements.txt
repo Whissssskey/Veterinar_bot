@@ -1,3 +1,2 @@
 telebot
 python-dotenv
-sqlite3
