@@ -345,4 +345,12 @@ if os.path.exists("last_chat.txt"):
         except Exception as e:
             print("Ошибка при вызове start после перезапуска:", e)
         os.remove("last_chat.txt")
-bot.polling(none_stop=True, interval=0)
+if __name__ == '__main__':
+    while True:
+        try:
+            print("Бот запущен...")
+            bot.polling(none_stop=True, interval=0)
+        except Exception as e:
+            print(f"Произошла ошибка: {str(e)}")
+            print("Перезапуск через 10 секунд...")
+            time.sleep(10)
